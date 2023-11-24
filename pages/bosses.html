@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bosses</title>
+  </head>
+  <body>
+    <h1>Line 王表轉 Google Sheet</h1>
+    <textarea id="inputField"></textarea>
+    <button onclick="parseInput()">轉換</button>
+    <textarea id="outputField"></textarea>
+    <hr />
+    <h2>Google Sheet 王順序(一般不用改)</h2>
+    <textarea id="bossOrder"></textarea>
+  </body>
+  <script>
+    var mapping = [];
+    var bossOrder = [
+      "茱莉亞公墓4",
+      "圖5金王克魯1",
+      "圖5金王克魯h",
+      "",
+      "涼風司令所1",
+      "涼風司令所h",
+      "伐木場1",
+      "伐木場h",
+      "安葛羅斯山峰1",
+      "安葛羅斯山峰h",
+      "啟示之塔4",
+      "歐奎羅斯湖1",
+      "歐奎羅斯湖h",
+      "黎明殿堂4",
+      "採石場1",
+      "採石場h",
+      "史萊姆女王1",
+      "史萊姆女王h",
+      "里賽曼羅公墓3",
+      "鯊魚牙船長1",
+      "鯊魚牙船長h",
+      "貝努喀達1",
+      "貝努喀達h",
+      "啟示之塔2",
+      "掠奪者巢穴1",
+      "掠奪者巢穴h",
+      "激戰平原1",
+      "激戰平原h",
+      "扭曲之森1",
+      "扭曲之森h",
+      "荒涼廢墟1",
+      "荒涼廢墟h",
+      "黎明殿堂2",
+      "灰色墓地1",
+      "灰色墓地h",
+      "生命之泉1",
+      "生命之泉h",
+      "圖1金王蜘蛛1",
+      "圖1金王蜘蛛h",
+      "雪怪",
+      "圖2金王蝴蝶1",
+      "安葛羅斯公墓2",
+      "圖2金王蝴蝶h",
+      "圖3金王火龍1",
+      "圖3金王火龍h",
+      "",
+    ];
+    function updateBossOrder() {
+      document.getElementById("bossOrder").value = bossOrder.join("\n");
+    }
+    updateBossOrder();
+    function parseInput() {
+      var input = document.getElementById("inputField").value.split("\n");
+      bossOrder = document.getElementById("bossOrder").value.split("\n");
+      var resultArr = Array(bossOrder.length).fill("");
+
+      for (var i = 0; i < input.length; i++) {
+        var data = input[i].split("    ");
+        var time = data[0];
+        var boss = data[1].trim();
+        resultArr[bossOrder.indexOf(boss)] = processDate(time);
+      }
+      document.getElementById("outputField").value = resultArr.join("\n");
+    }
+
+    function processDate(input) {
+      const currentDate = new Date();
+      const currentMonth = currentDate.getMonth() + 1; // 月份从0开始，所以要加1
+
+      const parts = input.split("_");
+      const datePart = parts[0];
+      const timePart = parts[1];
+      const inputDate = datePart.split("號")[0];
+
+      if (inputDate > currentDate) {
+        const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
+
+        return `${nextMonth}/${inputDate} ${timePart}`;
+      } else {
+        return `${currentMonth}/${inputDate} ${timePart}`;
+      }
+    }
+  </script>
+</html>
