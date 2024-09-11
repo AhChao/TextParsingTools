@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>Times</div>
+    <textarea id="times"></textarea>
+    <button onclick="calculate()">Calculate</button>
+    <div>Result</div>
+    <div id="result"></div>
+    <script>
+        function sumTimes(times) {
+            let totalMinutes = 0;
+
+            times.forEach(time => {
+                const [hours, minutes] = time.split(':').map(Number);
+                console.log(hours, minutes);
+                totalMinutes += (hours * 60) + minutes;
+            });
+
+            const totalHours = Math.floor(totalMinutes / 60);
+            const remainingMinutes = totalMinutes % 60;
+
+            return `${totalHours}:${remainingMinutes.toString().padStart(2, '0')}`;
+        }
+        function calculate(){
+            const times = document.getElementById('times').value.split("\n");
+            document.getElementById('result').innerHTML = sumTimes(times);
+        }
+
+    </script>
+</body>
+</html>
