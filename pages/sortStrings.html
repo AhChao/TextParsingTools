@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>SortString</div>
+    <textarea id="strings"></textarea>
+    <!--add a checkbox for sort number in str-->
+    <input type="checkbox" id="sortNumber">Sort Number</input><br/>
+    <button onclick="sortStrings()">Sort</button>
+    <div>Result</div>
+    <div id="result"></div>
+    <script>
+        function sortStrings() {
+            const strings = document.getElementById('strings').value.split("\n");
+            const isSortNumber = document.getElementById('sortNumber').checked;
+            //a string may contain number, try to combine the continue number and string, form a new array
+            if(isSortNumber){
+                const newStrings = strings.map(str => {
+                    const parts = str.match(/(\d+)|(\D+)/g);
+                    return [...parts.map(part => isNaN(part) ? part : parseInt(part))];
+                });
+                console.log(newStrings);
+                console.log(newStrings[48][0]);
+                console.log(newStrings[48][1]);
+                //when sorting, check element one by one, if it is number, compare number, if it is string, compare string
+                newStrings.sort((a, b) => {
+                    for (let i = 0; i < Math.min(a.length, b.length); i++) {
+                        if (!isNaN(Number(a[i])) && !isNaN(Number(b[i]))) {
+                            return Number(a[i]) - Number(b[i]);
+                        } else if(a[i] !== b[i]){
+                            //compare string alphabetic order
+                            return a[i].localeCompare(b[i]);
+                        }
+                    }
+                    return a.length - b.length;
+                });
+                newStrings.forEach((str, index) => {
+                    newStrings[index] = str.join('');
+                });
+                document.getElementById('result').innerHTML = newStrings.join("<br/>");
+            }else{
+                document.getElementById('result').innerHTML = strings.sort().join("<br/>");
+            }
+        }
+    </script>
+</body>
+</html>
